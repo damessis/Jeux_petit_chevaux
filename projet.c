@@ -7,7 +7,7 @@ typedef struct
 {
     /* data */
     int zone;
-    int case;
+    int cellule;
 }position;
 
 void jouer(){
@@ -33,45 +33,5 @@ int main()
     int pidj1;
     int pidj2;
     int pidj3;
-    switch (pidj0=fork())
-    {
-    case -1:
-        fprintf(stderr, "Erreur du premier fork\n");
-        exit(-1);
-    case 0:
-
-    default:
-        switch (pidj1=fork())
-        {
-        case -1:
-            fprintf(stderr, "Erreur du deuxieme fork\n");
-            exit(-1);
-        case 0:
-            fprintf(stderr, "Erreur de fork\n");
-            exit(-1);
-
-        default:
-        }
-        switch (pidj2=fork())
-            {
-            case -1:
-                fprintf(stderr, "Erreur du troisieme fork\n");
-                exit(-1);
-            case 0:
-                
-
-            default:
-        }
-        switch (pidj3=fork())
-                {
-                case -1:
-                    fprintf(stderr, "Erreur du quatrieme fork\n");
-                    exit(-1);
-                case 0:
-                    /*instruction pour le joueur 
-
-                default:
-        }
-        wait(NULL)
-    }
+    
 }
