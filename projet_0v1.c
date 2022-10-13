@@ -23,9 +23,5 @@ void initPlateau(int n){
   }
 }
 int main(){
-  int n;
-  n=4;
-  for(int i=0;i<n;i++){
-    creerfils();
-  }
+  initPlateau(4);
 }
