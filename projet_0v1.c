@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
+
 void creerfils(){
   switch (fork())
     {
@@ -16,6 +17,11 @@ void creerfils(){
   }
 }
 
+void initPlateau(int n){
+  for(int i=0;i<n;i++){
+    creerfils();
+  }
+}
 int main(){
   int n;
   n=4;
