@@ -4,6 +4,7 @@
 #include <sys/wait.h>
 #include "projet_0v1.h"
 
+//fonction creerfils() qui permet de creer un joueur
 void creerfils(){
   switch (fork())
     {
@@ -18,6 +19,7 @@ void creerfils(){
   }
 }
 
+//fonction initPlateau() qui permet de creer "n" joueur(s) et initialise un plateaux avec eux
 void initPlateau(int n){
   for(int i=0;i<n;i++){
     creerfils();
