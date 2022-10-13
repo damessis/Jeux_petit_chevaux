@@ -3,17 +3,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-typedef struct
-{
-    /* data */
-    int zone;
-    int cellule;
-}position;
-
-void jouer(){
-
-}
-
 int main() 
 {
     int f01[2];//tube de communication entre le joueur 0 et le joueur 1
@@ -33,5 +22,9 @@ int main()
     int pidj1;
     int pidj2;
     int pidj3;
+    
+    while(){
+        
+    }
     
 }
