@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "projet_0v1.h"
 
 void creerfils(){
   switch (fork())
