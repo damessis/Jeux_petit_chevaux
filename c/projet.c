@@ -3,14 +3,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-typedef struct
-{
-    /* data */
-    int zone;
-    int cellule;
-}position;
-
-void jouer(){
+void jouer() {
 
 }
 
