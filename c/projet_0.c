@@ -21,19 +21,47 @@ Joueur* tabJoueur;
 int* tubes;
 
 
-void creerfils(){
-  switch (fork())
-    {
-    case -1:
-        fprintf(stderr, "Erreur du premier fork\n");
-        exit(-1);
-    case 0:
-        printf("pid: %d   ppid: %d\n", getpid(), getppid() );
-        exit(0);
-    default:
-      wait(NULL);
-  }
+void creerfils(struct Joueur *jx, int* tube,int numerofils){
+	int *pinit=tube;
+	int i=0;
+	int k=0;
+  	switch (fork())
+    	{
+    		case -1:
+        		fprintf(stderr, "Erreur du premier fork\n");
+        		exit(-1);
+    		case 0:
+        		printf("pid: %d   ppid: %d\n", getpid(), getppid() );
+        		close(1);
+        		dup(tube[numerofils][1]);
+			close(0);
+			if(numerofils==0){
+				while(tube+1!=null){
+					tube++;
+				}
+				dup(*tube[0]);
+			tube=pinit+1;
+			}else if(numerofils==3/*nbJoueur*//*longeur du tableau -1 (arguement dans le main*/){
+				close(1);
+                    		dup(tube[numerofils][1]);
+				close(0);
+                    		dup(tube[0][0]);	
+			}else{
+			      dup(tube[numerofils-1][0]);
+			}
+			
+			while(i<4){
+				while(k<2){
+					close(tube[i][j]);
+				}
+			}
+  			exit(0);
+  		default:
+      			wait(NULL);
+  	}
 }
+
+
 
 void initPlateau(int nbreJoueur){
 
