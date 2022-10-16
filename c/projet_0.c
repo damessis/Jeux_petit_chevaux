@@ -68,7 +68,7 @@ void detruireLesTubes(int **tableauDeTubes){
 /*---------------------------------------------------------------------------------------------------------*/
 
 
-void creerfils(struct Joueur **tableauDeJoueur, int **tableauDeTubes,int n,int nbJoueur){
+void creerfils(struct Joueur **tableauDeJoueur, int **tableauDeTubes,int i,int nbJoueur,int* ecr,int* lu){
     	switch (fork()){
     		case -1:
         		fprintf(stderr, "Erreur du premier fork\n");
@@ -90,21 +90,21 @@ void creerfils(struct Joueur **tableauDeJoueur, int **tableauDeTubes,int n,int n
               			fprintf(stderr, "Erreur dans pipe \n"); 
               			exit(-1);
           		}
-            		write(tableauDeTubes[i][1], &ecr, sizeof(int));
+            		write(tableauDeTubes[i][1], ecr, sizeof(int));
             		close(tableauDeTubes[i][1]);
-            		printf("j'envoie :%d au joueur suivant\n", ecr);
+            		printf("j'envoie :%d au joueur suivant\n", *ecr);
           		if(i!=0){
-              			if(read(tableauDeTubes[i-1][0], &lu, sizeof(int))>0){
+              			if(read(tableauDeTubes[i-1][0], lu, sizeof(int))>0){
                 			close(tableauDeTubes[i-1][0]);
-                 			printf("je recois :%d du joueur precedent\n", lu);
+                 			printf("je recois :%d du joueur precedent\n", *lu);
               			}else{
                 			fprintf(stderr, "Erreur read \n");
               			}
           		}
           		if(i==nbJoueur-1){
-            			if(read(tableauDeTubes[nbJoueur-1][0], &lu, sizeof(int))>0){
+            			if(read(tableauDeTubes[nbJoueur-1][0], lu, sizeof(int))>0){
                 			close(tableauDeTubes[nbJoueur-1][0]);
-                 			printf("je recois :%d du joueur precedent\n", lu);
+                 			printf("je recois :%d du joueur precedent\n", *lu);
               			}else{
                 			fprintf(stderr, "Erreur read \n");
               			}
@@ -114,13 +114,16 @@ void creerfils(struct Joueur **tableauDeJoueur, int **tableauDeTubes,int n,int n
       				while (wait(NULL)!=-1);
  
   	}
-  			
-}
+} 			
+
 
 void initPlateau(int nbJoueur,int **tableauDeTubes,struct Joueur **tableauDeJoueur ){
-  /* Boucle for qui crée tous les fils */
-  for(int i = 0; i < n; i++){
-    creerfils(tableauDeJoueur, tableauDeTubes,i,nbJoueur);
+  int ecr=1;
+  int lu=100;
+ 	for(int i=0;i<nbJoueur;i++){
+    ecr++;
+    creerfils(tableauDeJoueur, tableauDeTubes,i,nbJoueur,&ecr,&lu);
   }
 }
+
 
