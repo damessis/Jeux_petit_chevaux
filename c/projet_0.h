@@ -5,7 +5,7 @@ et nous permettra ainsi de reperer l'endroit ou se trouve un joueur;*/
 #define PROJET_0
 
 /*------------------------------------------------------------------------------------------------------------------*/
-void creerfils(struct Joueur **tableauDeJoueur, int **tableauDeTubes, int n, int nbJoueur );//fonction qui permet de creer un joueur
+void creerfils(struct Joueur **tableauDeJoueur, int **tableauDeTubes, int n, int nbJoueur, int* ecr,int* lu );//fonction qui permet de creer un joueur
 
 /*------------------------------------------------------------------------------------------------------------------*/
 void initPlateau(int n, int **tableauDeTubes,struct Joueur **tableauDeJoueur );//fonction qui cree "n" joueur et initialise un plateau avec eux
