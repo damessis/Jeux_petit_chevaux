@@ -69,6 +69,10 @@ void detruireLesTubes(int **tableauDeTubes){
 
 
 void creerfils(struct Joueur **tableauDeJoueur, int **tableauDeTubes,int i,int nbJoueur,int* ecr,int* lu){
+	if (pipe(tableauDeTubes[i]) != 0) {/* pipe */
+              			fprintf(stderr, "Erreur dans pipe \n"); 
+              			exit(-1);
+          		}
     	switch (fork()){
     		case -1:
         		fprintf(stderr, "Erreur du premier fork\n");
@@ -86,10 +90,6 @@ void creerfils(struct Joueur **tableauDeJoueur, int **tableauDeTubes,int i,int n
 			printf("position initiale deuxieme pion du joueur courant zone: %d\n", tableauDeJoueur[i][0].pion1->zone);
           		printf("position initiale deuxieme pion du joueur courant cellule: %d\n", tableauDeJoueur[i][0].pion1->cellule);
           		printf("pid: %d   ppid: %d\n", getpid(), getppid() );
-          		if (pipe(tableauDeTubes[i]) != 0) {/* pipe */
-              			fprintf(stderr, "Erreur dans pipe \n"); 
-              			exit(-1);
-          		}
             		write(tableauDeTubes[i][1], ecr, sizeof(int));
             		close(tableauDeTubes[i][1]);
             		printf("j'envoie :%d au joueur suivant\n", *ecr);
