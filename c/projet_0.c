@@ -4,23 +4,6 @@
 #include <sys/wait.h>
 #include "projet_0v1.h"
 
-int nbreJoueur;
-
-struct PositionPion {
-    int zone;
-    int cellule;
-};
-
-struct Joueur {
-    int pid;
-    struct PositionPion *pion1;
-    struct PositionPion *pion2;
-}
-
-Joueur* tabJoueur;
-int* tubes;
-/*---------------------------------------------------------------------------------------------------------*/
-
 struct Joueur **createTableDeJoueur(int nbJoueur){
   struct Joueur **tableauDeJoueur =(struct Joueur **)malloc(nbJoueur*sizeof(struct Joueur *));
   struct Joueur *joueur=(struct Joueur *)malloc(nbJoueur*sizeof(struct Joueur));
@@ -66,63 +49,60 @@ void detruireLesTubes(int **tableauDeTubes){
 }
 
 /*---------------------------------------------------------------------------------------------------------*/
-
-
-void creerfils(struct Joueur **tableauDeJoueur, int **tableauDeTubes,int i,int nbJoueur,int* ecr,int* lu){
-	if (pipe(tableauDeTubes[i]) != 0) {/* pipe */
-              			fprintf(stderr, "Erreur dans pipe \n"); 
-              			exit(-1);
-          		}
-    	switch (fork()){
-    		case -1:
-        		fprintf(stderr, "Erreur du premier fork\n");
-        		exit(-1);
-    		case 0:
-          		printf("n %d\n",i);
-          		(tableauDeJoueur[i][0]).pid=getpid();
-          		(tableauDeJoueur[i][0]).pion1->zone=i;
-          		(tableauDeJoueur[i][0]).pion1->cellule=0;
-			(tableauDeJoueur[i][0]).pion2->zone=i;
-          		(tableauDeJoueur[i][0]).pion2->cellule=0;
-          		printf("pid du joueur courant: %d\n", tableauDeJoueur[i]->pid);
-          		printf("position initiale premier pion du joueur courant zone: %d\n", tableauDeJoueur[i][0].pion1->zone);
-          		printf("position initiale premier pion du joueur courant cellule: %d\n", tableauDeJoueur[i][0].pion1->cellule);
-			printf("position initiale deuxieme pion du joueur courant zone: %d\n", tableauDeJoueur[i][0].pion1->zone);
-          		printf("position initiale deuxieme pion du joueur courant cellule: %d\n", tableauDeJoueur[i][0].pion1->cellule);
-          		printf("pid: %d   ppid: %d\n", getpid(), getppid() );
-            		write(tableauDeTubes[i][1], ecr, sizeof(int));
-            		close(tableauDeTubes[i][1]);
-            		printf("j'envoie :%d au joueur suivant\n", *ecr);
-          		if(i!=0){
-              			if(read(tableauDeTubes[i-1][0], lu, sizeof(int))>0){
-                			close(tableauDeTubes[i-1][0]);
-                 			printf("je recois :%d du joueur precedent\n", *lu);
-              			}else{
-                			fprintf(stderr, "Erreur read \n");
-              			}
-          		}
-          		if(i==nbJoueur-1){
-            			if(read(tableauDeTubes[nbJoueur-1][0], lu, sizeof(int))>0){
-                			close(tableauDeTubes[nbJoueur-1][0]);
-                 			printf("je recois :%d du joueur precedent\n", *lu);
-              			}else{
-                			fprintf(stderr, "Erreur read \n");
-              			}
-          		}  
-  			default:
-            			printf("\n\n");
-      				while (wait(NULL)!=-1);
- 
-  	}
-} 			
+		
 
 
 void initPlateau(int nbJoueur,int **tableauDeTubes,struct Joueur **tableauDeJoueur ){
   int ecr=1;
   int lu=100;
- 	for(int i=0;i<nbJoueur;i++){
+  pid_t pid;
+  
+  for(int i=0;i<nbJoueur;i++){
+    if (pipe(tableauDeTubes[i]) != 0) {/* pipe */
+ 			 fprintf(stderr, "Erreur dans pipe \n"); 
+ 			 exit(-1);
+   	}
+  }
+
+  for(int i=0;i<nbJoueur;i++){
+    pid = fork();
+    if (pid>0){
+                printf ("PID du PERE %d\n",getpid());
+                printf ("Création JOUEUR #%d : PID %d\n",i,pid);
+                wait(NULL);
+    }
+    else if (!pid){
+              
+              if(i!=0){
+              			if(read(tableauDeTubes[i-1][0], &lu, sizeof(int))>=0){
+                			//close(tableauDeTubes[i-1][0]);
+                 			printf("je recois :%d du joueur precedent\n", lu);
+              			}else{
+                			fprintf(stderr, "Erreur read \n");
+              			}
+          		}
+      	      (tableauDeJoueur[i][0]).pid=getpid();
+          		(tableauDeJoueur[i][0]).pion1->zone=i;
+          		(tableauDeJoueur[i][0]).pion1->cellule=0;
+			        (tableauDeJoueur[i][0]).pion2->zone=i;
+          		(tableauDeJoueur[i][0]).pion2->cellule=0;
+		          printf("pid du joueur courant: %d\n", tableauDeJoueur[i]->pid);
+          		printf("position initiale premier pion du joueur courant zone: %d\n", tableauDeJoueur[i][0].pion1->zone);
+          		printf("position initiale premier pion du joueur courant cellule: %d\n", tableauDeJoueur[i][0].pion1->cellule);
+			        printf("position initiale deuxieme pion du joueur courant zone: %d\n", tableauDeJoueur[i][0].pion1->zone);
+          		printf("position initiale deuxieme pion du joueur courant cellule: %d\n", tableauDeJoueur[i][0].pion1->cellule);
+          		printf("pid: %d   ppid: %d\n", getpid(), getppid() );
+          		write(tableauDeTubes[i][1], &ecr, sizeof(int));
+          		//close(tableauDeTubes[i][1]);
+          		printf("j'envoie :%d au joueur suivant\n", ecr);
+             printf("\n\n");
+             
+          		
+       break;
+    }else{
+    perror ("Erreur à l'appel de fork()");
+    }
     ecr++;
-    creerfils(tableauDeJoueur, tableauDeTubes,i,nbJoueur,&ecr,&lu);
   }
 }
 
