@@ -30,7 +30,7 @@ int de(int dernier_lance);
 
 
 //fonction qui associe les joueur et leur pions(initialisé) a un processus
-void initPlateau(int nbJoueur,struct Joueur tableauDeJoueur[],int tableauDeTubesFils[][],int tableauDeTubesPere[][]);
+void initPlateau(int nbJoueur,struct Joueur tableauDeJoueur[],int tableauDeTubes[4][2],int tableauDeTubes2[4][2]);
 
 
 /*------------------------------------------------------------------------------------------------------------------*/
