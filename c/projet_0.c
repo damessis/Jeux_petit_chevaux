@@ -100,36 +100,4 @@ void initPlateau(int nbJoueur, struct Joueur tableauDeJoueur[], int tableauDeTub
 
 
 
-int main(int argc, char *argv[]){
-   int nbJoueur;
-   if(argc!=2){
-     fprintf(stderr,"Erreur nombre d'argument incorrect Format correct <nomprogramme> <nombre de joueurs>\n");
-     exit(-1);
-   }else{
-     nbJoueur=atoi(argv[1]);
-     if((nbJoueur!=2) && (nbJoueur!=4)){
-        fprintf(stderr,"Nombre de joueur choisi incorrect Format correct.Pour une partie il faut soit '2 joueurs' soit '4 joueurs'\n");
-        exit(-1); 
-     } 
-   }
-   int tableauDeTubesFils[nbJoueur][2];// on stocke ici les tubes qui permette aux fils de communiquer entre eux*
-   struct Joueur tableauDeJoueur[nbJoueur];
-   int tableauDeTubesPere[nbJoueur][2];// on stocke ici les tubes qui permette au pere d'envoyer des informations aux fils et d'en recevoir
-   for(int i=0;i<nbJoueur;i++){
-    if (pipe(tableauDeTubesFils[i]) != 0) {/* pipe */
- 			 fprintf(stderr, "Erreur dans pipe \n"); 
- 			 exit(-1);
-   	}
-   }
-   for(int i=0;i<nbJoueur;i++){
-    if (pipe(tableauDeTubesPere[i]) != 0) {/* pipe */
- 			 fprintf(stderr, "Erreur dans pipe \n"); 
- 			 exit(-1);
-   	}
-   }
-   initPlateau(nbJoueur,tableauDeJoueur,tableauDeTubesFils,tableauDeTubesPere);
-   
-   
-     
-}
 
