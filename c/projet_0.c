@@ -1,17 +1,7 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <time.h>
-#include <sys/wait.h>
-#include "projet_0v1.h"
-#include <stdbool.h>
-
-
-/*---------------------------------------------------------------------------------------------------------*/
-
 bool partieGagne=false;
 pid_t pid;
 pid_t pidJoueurSuivant;
+int nbJoueur;
 
 int de(int dernier_lance){
 	int a;
@@ -39,7 +29,7 @@ void initialiser_joueur(struct Joueur tableauJoueur[],int joueur,pid_t pid){
 		
 
 
-void initPlateau(int nbJoueur, struct Joueur tableauDeJoueur[], int tableauDeTubesFils[][],int tableauDeTubesPere[][]){
+void initPlateau(int nbJoueur, struct Joueur tableauDeJoueur[], int tableauDeTubes[nbJoueur][2], int tableauDeTubes2[nbJoueur][2]){
 
   for(int i=0;i<nbJoueur;i++){
     pid = fork();
@@ -83,21 +73,12 @@ void initPlateau(int nbJoueur, struct Joueur tableauDeJoueur[], int tableauDeTub
      }else{
      
      }
-     
-     
-      
-      //fait write dans tube 0
-     }
-     }
-    }
-    partieGagne=true;
+     partieGagne=true;//on effacera ca d'ici ;c'est dans jouer qu'on doit modifier partieGagnee
   }
+
+    
   
 }
 
 
 /*---------------------------------------------------------------------------------------------------------*/
-
-
-
-
