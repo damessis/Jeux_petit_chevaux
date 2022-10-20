@@ -1,5 +1,5 @@
-#ifndef PROJET_0
-#define PROJET_0
+#ifndef PROJET_1
+#define PROJET_1
 
 /*------------------------------------------------------------------------------------------------------------------*/
 
@@ -23,7 +23,10 @@ void initialiser_joueur(struct Joueur tableauJoueur[], int joueur, pid_t pid);
 
 
 int de(int dernier_lance);
-
+void caseSuivante(int joueur, int pion, int de, Joueur* tabJoueurs, int nbJoueur);
+void sortieEcurie(int joueur, int pion, Joueur* tabJoueurs);
+int joueurPrecedent(int joueur, int nbJoueur);
+void avancerPion(int joueur, int de, Joueur* tabJoueurs, int nbJoueur);
 
 
 /*------------------------------------------------------------------------------------------------------------------*/
